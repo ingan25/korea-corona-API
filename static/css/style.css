@@ -1,0 +1,38 @@
+.container{
+    display:flex;
+    flex-direction: column;
+}
+header{border-bottom:1px solid gray;}
+footer{border-bottom:1px solid gray;}
+section{display:flex;}
+section > nav{ border-right:1px solid gray; }
+section > aside{ border-left:1px solid gray;  }
+nav, aside{flex-basis:385px;
+           flex-shrink:0;}
+
+   #head{
+       text-align: center;
+       padding: 20px;
+       display:inline;
+       background-color:yellow;
+       color:black;
+
+   }
+   #r, #q, #e{
+       margin-top:400px;
+   }
+   #w{
+       margin-top:75px;
+   }
+   #qurRate{ margin-bottom:200px;}
+
+   .line{ background-color: black; width:4px;}
+
+   div > h2{
+       text-align: center;
+   }
+   footer{text-align: center;
+           padding:20px;
+           color:#BDBDBD;
+           background-color:#747474;
+           display:block;}

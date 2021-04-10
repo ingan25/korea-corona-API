@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>코로나 지역현황</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+</head>
+<body>
+ <div class="container">
+
+    <header>
+
+        <img src="{{url_for('static', filename='app.png')}}"  width="200px"/>
+        <div id="head">
+            <h1>코로나 지역 현황</h1>
+        </div>
+
+</header>
+
+  <section>
+      <nav>
+
+      </nav>
+      <main>
+        <table>
+            <th>
+              <h2 id="w">지역별 사망자 누적수</h2>
+              <canvas id="deathCnt" width="1100px", height="600px"></canvas>
+            </th>
+        </tr>
+
+            <tr>
+            <th>
+              <h2 id="e">전일대비 증감 수 - 확진자</h2>
+              <canvas id="incDec" width="1100px", height="600px"></canvas>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <h2 id="q">격리 해제 수</h2>
+            <canvas id="isolClearCnt" width="1100px", height="600px"></canvas>
+          </th>
+        </tr>
+        <tr>
+            <th>
+              <h2 id="r">10만명당 발생률</h2>
+              <canvas id="qurRate" width="1100px", height="600px"></canvas>
+            </th>
+          </tr>
+        </table>
+
+    </main>
+    <aside>
+
+
+</aside>
+    </section>
+ <footer>
+     Coptright 2021.황지환 All pictures cannot be copied without permisson.
+ </footer>
+</div>
+
+    <script>
+    //각 지역별 색상
+    background_color = ["rgb(255, 204, 204)","rgb(255, 153, 153)","rgb(255, 204, 153)",
+          "rgb(255, 205, 102)","rgb(255, 255, 153)","rgb(204, 255, 204)",
+          "rgb(153, 255, 153)","rgb(000, 255, 153)","rgb(000, 255, 204)",
+          "rgb(051, 255, 255)","rgb(153, 255, 255)","rgb(204, 255, 255)",
+          "rgb(153, 204, 255)","rgb(102, 153, 255)","rgb(153, 102, 255)",
+          "rgb(204, 153, 255)","rgb(153, 102, 204)","rgb(204, 204, 204)",
+          "rgb(153, 153, 153)",]
+
+    //테두리 색상
+    border_color = ["rgb(204, 051, 051)","rgb(204, 000, 000)","rgb(255, 153, 000)",
+          "rgb(255, 102, 000)","rgb(255, 255, 000)","rgb(102, 204, 102)",
+          "rgb(000, 102, 000)","rgb(000, 204, 000)","rgb(000, 204, 204)",
+          "rgb(102, 153, 204)","rgb(102, 153, 255)","rgb(000, 102, 204)",
+          "rgb(000, 102, 255)","rgb(051, 102, 204)","rgb(000, 051, 102)",
+          "rgb(102, 000, 153)","rgb(102, 000, 204)","rgb(102, 102, 102)",
+          "rgb(051, 051, 051)",]
+
+      //사망자 수(누적수) 그래프
+      var ctx_death = document.getElementById('deathCnt').getContext('2d');
+      var deathChart = new Chart(ctx_death, {
+        type:"bar",
+        data:
+          {labels:[{% for d in data %}"{{d.gubun}}",{% endfor %}],
+          datasets:[{
+            label:"코로나 누적 사망자",
+            data:[{% for d in data %}{{d.deathCnt}},{% endfor %}],
+            fill:false,
+            backgroundColor: background_color,
+            borderColor:border_color,
+            borderWidth:1}],
+            options:{scales:{yAxes:[{ticks:{beginAtZero:true}}]}}}});
+
+
+      var ctx_incDec = document.getElementById("incDec").getContext('2d');
+      var incDecChart = new Chart(ctx_incDec, {
+      type:"bar",
+      data:
+        {labels:[{% for d in data %}"{{d.gubun}}",{% endfor %}],
+        datasets:[{
+          label:"전일대비 증감 수 - 확진자",
+          data:[{% for d in data %}{{d.incDec}},{% endfor %}],
+          fill:false,
+          backgroundColor:background_color,
+          borderColor:border_color,
+          borderWidth:1}],
+          options:{scales:{yAxes:[{ticks:{beginAtZero:true}}]}}}});
+
+      var ctx_isolClearCnt = document.getElementById("isolClearCnt").getContext('2d');
+      var isolClearCntChart = new Chart(ctx_isolClearCnt, {
+        type:"bar",
+        data:
+          {labels:[{% for d in data %}"{{d.gubun}}",{% endfor %}],
+          datasets:[{
+            label:"격리 해제 수",
+            data:[{% for d in data %}{{d.isolClearCnt}},{% endfor %}],
+            fill:false,
+            backgroundColor:background_color,
+            borderColor:border_color,
+            borderWidth:1}],
+            options:{scales:{yAxes:[{ticks:{beginAtZero:true}}]}}}});
+
+      var ctx_qurRate = document.getElementById("qurRate").getContext('2d');
+      var qurRateChart = new Chart(ctx_qurRate, {
+        type:"bar",
+        data:
+          {labels:[{% for d in data %}"{{d.gubun}}",{% endfor %}],
+          datasets:[{
+            label:"10만명당 발생률",
+            data:[{% for d in data %}{{d.qurRate|float}},{% endfor %}],
+            fill:false,
+            backgroundColor:background_color,
+            borderColor:border_color,
+            borderWidth:1}],
+            options:{scales:{yAxes:[{ticks:{beginAtZero:true}}]}}}});
+    </script>
+</body>
+
+</html>
